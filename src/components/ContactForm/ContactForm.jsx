@@ -2,15 +2,16 @@ import { Form, Label, Input, Button } from './ContactForm.styled';
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/contactsSlice';
-import { addContact } from 'redux/contactsSlice';
+import { selectContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations';
+import { errorMessage, successMessage } from 'services/notifications';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
 
   const handleInputChange = e => {
     const { name, value } = e.currentTarget;
@@ -22,21 +23,23 @@ export const ContactForm = () => {
         setNumber(value);
         break;
       default:
-        return;
+        return console.log(`Error in ${e.target.name}`);
     }
   };
 
   const addNewContact = (name, number) => {
     if (checkAvailability(name)) {
-      return alert(`${name} is already in contacts`);
+      return errorMessage(`${name} is already in contacts`);
     }
 
     const newContact = {
       id: nanoid(),
       name,
-      number,
+      phone: number,
     };
+
     dispatch(addContact(newContact));
+    successMessage(`${name} is added to contacts`);
   };
 
   const checkAvailability = name =>

@@ -1,17 +1,23 @@
 import PropTypes from 'prop-types';
 import { Li, P, Btn } from './ContactItem.styled';
 import { useDispatch } from 'react-redux';
-import { removeContact } from 'redux/contactsSlice';
+import { deleteContact } from 'redux/operations';
+import { successMessage } from 'services/notifications';
 
 export const ContactItem = ({ id, name, number }) => {
   const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    dispatch(deleteContact(id));
+    successMessage(`${name} was delete from contacts`);
+  };
 
   return (
     <Li>
       <P>
         {name}: {number}
       </P>
-      <Btn onClick={() => dispatch(removeContact(id))}>Delete</Btn>
+      <Btn onClick={handleDelete}>Delete</Btn>
     </Li>
   );
 };

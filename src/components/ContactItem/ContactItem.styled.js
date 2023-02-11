@@ -21,7 +21,7 @@ export const Btn = styled.button`
   align-items: center;
   width: 80px;
   font-weight: 700;
-  margin: 0 10px;
+  margin: 0 10px 0 15px;
   padding: 5px;
   background-color: transparent;
   box-shadow: 0 0 2px;
